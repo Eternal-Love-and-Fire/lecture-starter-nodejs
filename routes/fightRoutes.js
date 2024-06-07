@@ -9,5 +9,5 @@ import { responseMiddleware } from "../middlewares/response.middleware.js";
 const router = Router();
 
 // OPTIONAL TODO: Implement route controller for fights
-
+router.get('')
 export { router };

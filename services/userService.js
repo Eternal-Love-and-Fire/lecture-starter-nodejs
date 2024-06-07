@@ -10,6 +10,30 @@ class UserService {
     }
     return item;
   }
+
+  index() {
+    return userRepository.getAll();
+  }
+
+  show(id) {
+    return userRepository.getOne({ id });
+  }
+
+  store(user) {
+    const { email, phoneNumber } = user;
+    if (this.search({ email }) || this.search({ phoneNumber })) {
+      throw new Error("User already exist with same number or phone");
+    }
+    return userRepository.create(user);
+  }
+
+  update(id, updatedUser) {
+    return userRepository.update(id, updatedUser);
+  }
+
+  destroy(id) {
+    return userRepository.delete(id);
+  }
 }
 
 const userService = new UserService();
