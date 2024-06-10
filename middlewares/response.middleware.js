@@ -7,7 +7,7 @@ const responseMiddleware = (req, res, next) => {
     res.status(status).json({ error: true, message });
   };
 
-  res.sendNotFound = (message = 'Not Found') => {
+  res.sendNotFound = (message = "Not Found") => {
     res.status(404).json({ error: true, message });
   };
 

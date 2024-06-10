@@ -1,41 +1,8 @@
-import { USER_VALIDATION_RULES } from "../models/user.js";
-
-const validate = (data, rules) => {
-  for (const key in rules) {
-    const rule = rules[key];
-    const value = data[key];
-
-    if (rule.required && (value === undefined || value === null)) {
-      return `${key} is required`;
-    }
-
-    if (value !== undefined && value !== null) {
-      if (rule.type && typeof value !== rule.type) {
-        return `${key} must be a ${rule.type}`;
-      }
-
-      if (rule.min !== undefined && value < rule.min) {
-        return `${key} must be at least ${rule.min}`;
-      }
-
-      if (rule.max !== undefined && value > rule.max) {
-        return `${key} must be at most ${rule.max}`;
-      }
-
-      if (rule.pattern && !rule.pattern.test(value)) {
-        return `${key} is not in the correct format`;
-      }
-
-      if (rule.minLength !== undefined && value.length < rule.minLength) {
-        return `${key} must be at least ${rule.minLength} characters long`;
-      }
-    }
-  }
-  return null;
-};
+import { USER } from "../models/user.js";
+import { validate } from "../helpers/validate.js";
 
 const createUserValid = (req, res, next) => {
-  const error = validate(req.body, USER_VALIDATION_RULES);
+  const error = validate(req.body, USER);
   if (error) {
     return res.sendError(error, 400);
   }
@@ -48,9 +15,7 @@ const createUserValid = (req, res, next) => {
 };
 
 const updateUserValid = (req, res, next) => {
-  const hasValidField = Object.keys(req.body).some(
-    (field) => field in USER_VALIDATION_RULES
-  );
+  const hasValidField = Object.keys(req.body).some((field) => field in USER);
 
   if (!hasValidField) {
     return res.sendError(
@@ -60,8 +25,8 @@ const updateUserValid = (req, res, next) => {
   }
 
   const partialRules = Object.keys(req.body).reduce((acc, key) => {
-    if (USER_VALIDATION_RULES[key]) {
-      acc[key] = USER_VALIDATION_RULES[key];
+    if (USER[key]) {
+      acc[key] = USER[key];
     }
     return acc;
   }, {});
