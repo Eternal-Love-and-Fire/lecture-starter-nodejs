@@ -5,10 +5,7 @@ class UserService {
 
   search(search) {
     const item = userRepository.getOne(search);
-    if (!item) {
-      return null;
-    }
-    return item;
+    return item || null;
   }
 
   index() {
@@ -28,10 +25,19 @@ class UserService {
   }
 
   update(id, updatedUser) {
+    const user = this.show(id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     return userRepository.update(id, updatedUser);
   }
 
   destroy(id) {
+    const user = this.show(id);
+    if (!user) {
+      throw new Error("user not found");
+    }
     return userRepository.delete(id);
   }
 }

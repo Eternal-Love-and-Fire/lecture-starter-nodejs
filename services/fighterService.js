@@ -27,10 +27,19 @@ class FighterService {
   }
 
   update(id, updatedFighter) {
+    const fighter = this.show(id);
+    if (!fighter) {
+      throw new Error("Fighter not found");
+    }
+
     return fighterRepository.update(id, updatedFighter);
   }
 
   destroy(id) {
+    const fighter = this.show(id);
+    if (!fighter) {
+      throw new Error("Fighter not found");
+    }
     return fighterRepository.delete(id);
   }
 }

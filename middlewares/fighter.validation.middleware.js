@@ -40,7 +40,7 @@ const createFighterValid = (req, res, next) => {
     return res.sendError(error, 400);
   }
 
-  if ('id' in req.body) {
+  if ("id" in req.body) {
     return res.sendError("ID should not be provided in the request body", 400);
   }
 
@@ -48,18 +48,30 @@ const createFighterValid = (req, res, next) => {
 };
 
 const updateFighterValid = (req, res, next) => {
-  const hasValidField = Object.keys(req.body).some(field => field in FIGHTER_VALIDATION_RULES);
+  const hasValidField = Object.keys(req.body).some(
+    (field) => field in FIGHTER_VALIDATION_RULES
+  );
 
   if (!hasValidField) {
-    return res.sendError("At least one valid field is required for update", 400);
+    return res.sendError(
+      "At least one valid field is required for update",
+      400
+    );
   }
 
-  const error = validate(req.body, FIGHTER_VALIDATION_RULES);
+  const partialRules = Object.keys(req.body).reduce((acc, key) => {
+    if (FIGHTER_VALIDATION_RULES[key]) {
+      acc[key] = FIGHTER_VALIDATION_RULES[key];
+    }
+    return acc;
+  }, {});
+
+  const error = validate(req.body, partialRules);
   if (error) {
     return res.sendError(error, 400);
   }
 
-  if ('id' in req.body) {
+  if ("id" in req.body) {
     return res.sendError("ID should not be provided in the request body", 400);
   }
 
