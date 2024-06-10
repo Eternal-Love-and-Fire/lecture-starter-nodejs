@@ -1,6 +1,6 @@
 const responseMiddleware = (req, res, next) => {
   res.sendResponse = (data, status = 200) => {
-    res.status(status).json({ data });
+    res.status(status).json(data);
   };
 
   res.sendError = (message, status = 400) => {
